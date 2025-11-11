@@ -1,0 +1,39 @@
+name: Build Example
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # adjust if needed
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Bundle the code into a zip
+      - name: Bundle code
+        run: |
+          zip -r app_bundle.zip . -x "*.git*" "*.github*" "node_modules/**/.cache/*"
+
+      # Step 5: Run unit tests and generate report
+      - name: Run unit tests
+        run: |
+          npm test -- --json --outputFile=test-report.json
+        
