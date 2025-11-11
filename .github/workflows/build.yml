@@ -14,9 +14,6 @@ jobs:
         
       - name: Setup Node.js
         uses: actions/setup-node@v4.4.0
-          
-      - name: Build
-        run: npm install && npm run build
 
       - name: Zip
         run: zip -r project_bundle.zip .
