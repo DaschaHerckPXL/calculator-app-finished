@@ -1,4 +1,4 @@
-name: Dependencies Example 
+name: Build Example 
 on:
   push:
     branches:
@@ -13,5 +13,5 @@ jobs:
         uses: actions/checkout@v5.0.0
       - name: Setup Node.js
         uses: actions/setup-node@v4.4.0
-      - name: Verification
-        run: ls -alhR
+      - run: npm install
+        
