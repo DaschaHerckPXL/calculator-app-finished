@@ -35,5 +35,5 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: report
-          path: /tests
+          path: ./tests
       
