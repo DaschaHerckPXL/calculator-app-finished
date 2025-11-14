@@ -24,9 +24,9 @@ jobs:
 
       - name: Bundle code into zip
         run: |
-          mkdir bundle
-          cp bundle/
-          zip -r app_bundle.zip bundle node_modules
+          mkdir -p bundle
+          cp -r . bundle/
+          zip -r app_bundle.zip bundle node_module
 
       - name: Test the code
         run: |
