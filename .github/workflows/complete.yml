@@ -4,37 +4,38 @@ on:
   push:
     branches:
       - main
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
-
-      - name: Setup Node.js environment
+        
+      - name: Node.js
         uses: actions/setup-node@v4.4.0
         with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: zip -r app.zip ./
-
-
-      - name: Test the code
+          node-version: '20.x'
+          cache: npm
+          
+      - name: Build and test
         run: |
-          npm test -- --reporters=jest-junit
-        env:
-          JEST_JUNIT_OUTPUT_DIR: ./test-results
-          JEST_JUNIT_OUTPUT_NAME: junit.xml
+          npm install
+          npm run build --if-present
+          npm test
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
+      - name: Make zip
+        uses: actions/upload-artifact@v5
         with:
-          name: test-report
-          path: ./test-results/junit.xml
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/**/*.md
+            
+      - name: Make report
+        uses: actions/upload-artifact@v5
+        with:
+          name: code-coverage-report
+          path: output/test/code-coverage.htm
+      
