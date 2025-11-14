@@ -22,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the code
-        run: npm run build
-
       - name: Bundle code into zip
         run: |
           mkdir -p bundle
