@@ -51,4 +51,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/cloud:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/dev-ops:latest
