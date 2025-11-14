@@ -22,11 +22,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Bundle code into zip
-        run: |
-          mkdir -p bundle
-          cp -r . bundle/
-          zip -r app_bundle.zip bundle node_module
+      - name: Build
+        run: zip -r app.zip ./
+
 
       - name: Test the code
         run: |
