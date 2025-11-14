@@ -29,7 +29,9 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: my-apps
-          path: .
+          path: |
+            .
+            !./**/*.md
             
       - name: Make report
         uses: actions/upload-artifact@v5
