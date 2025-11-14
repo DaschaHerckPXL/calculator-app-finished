@@ -6,28 +6,40 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v5.0.0
 
-      - name: Setup Node.js
+      - name: Setup Node.js environment
         uses: actions/setup-node@v4.4.0
         with:
           node-version: '15'
-          
-      - name: Build
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the code
+        run: npm run build
+
+      - name: Bundle code into zip
         run: |
-            npm install
-            zip -r app.zip ./
+          mkdir -p bundle
+          cp -r . bundle/
+          zip -r app_bundle.zip bundle node_modules
 
-      - name: Run unit tests
-        run: npm test
+      - name: Test the code
+        run: |
+          npm test -- --reporters=jest-junit
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./test-results
+          JEST_JUNIT_OUTPUT_NAME: junit.xml
 
-      - name: Report
-        uses: actions/upload-artifact@v5
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
         with:
-          name: coverage-report
-          path: coverage/
-
+          name: test-report
+          path: ./test-results/junit.xml
