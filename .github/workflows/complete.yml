@@ -16,17 +16,16 @@ jobs:
         uses: actions/setup-node@v4.4.0
         with:
           node-version: '15'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build and bundle app
-        run: zip -r app.zip ./
+          
+      - name: Build
+        run: |
+            npm install
+            zip -r app.zip ./
 
       - name: Run unit tests
         run: npm test
 
-      - name: Code coverage report
+      - name: Report
         uses: actions/upload-artifact@v5
         with:
           name: coverage-report
