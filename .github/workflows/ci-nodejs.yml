@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: results
-          path: coverage/results
+          path: coverage/
 
         
 
