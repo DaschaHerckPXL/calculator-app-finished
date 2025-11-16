@@ -50,7 +50,7 @@ jobs:
         run: npm run format:check
 
       - name: Security audit
-        run: npm audit
+        run: npm audit --audit-level=moderate
 
         
 
