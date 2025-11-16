@@ -24,11 +24,15 @@ jobs:
         run: npm test -- --coverage
 
       - name: Coverage Rapport
-        uses: mridang/action-test-reporter@v1
+        # uses: mridang/action-test-reporter@v1
+        # with:
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          # coverage-file: ./coverage/clover.xml
+          # working-directory: ./
+        uses: actions/upload-artifact@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-file: ./coverage/clover.xml
-          working-directory: ./
+          name: results
+          path: coverage/results
 
         
 
