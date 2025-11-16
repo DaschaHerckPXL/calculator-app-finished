@@ -33,7 +33,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/dev-ops
           tags: |
-            value=latest
+            type=raw, value=latest
             type=ref,event=tag
 
 
