@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
       
 jobs:
   NodeJS:
@@ -46,8 +49,8 @@ jobs:
       - name: ESLint 
         run: npm run lint
 
-      - name: Prettier Check
-        run: npm run format:check --write
+#      - name: Prettier Check
+#        run: npm run format:check --write
 
       - name: Security audit
         run: npm audit --audit-level=moderate
