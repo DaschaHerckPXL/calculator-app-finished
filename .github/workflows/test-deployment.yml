@@ -3,6 +3,7 @@ name: test-deployment
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   deployment:
