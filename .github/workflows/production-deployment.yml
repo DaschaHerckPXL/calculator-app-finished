@@ -1,0 +1,34 @@
+name: Production Deployment
+
+on:
+  push:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to EC2 over SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.PROD_IP }}
+        username: ubuntu
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          echo "Updating Docker image..."
+          docker pull daschaherck/dev-ops:latest
+
+          echo "Stopping running container (if exists)..."
+          docker stop app || true
+          docker rm app || true
+
+          echo "Starting container on port 80..."
+          docker run -d \
+            --name app \
+            -p 80:80 \
+            daschaherck/dev-ops:latest
+
+          echo "Deployment finished!"
