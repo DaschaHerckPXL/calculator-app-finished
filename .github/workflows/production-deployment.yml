@@ -18,17 +18,20 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_KEY }}
         script: |
-          echo "Updating Docker image..."
-          docker pull daschaherck/dev-ops:latest
+          echo "=== Docker version ==="
+          sudo docker --version
 
-          echo "Stopping running container (if exists)..."
-          docker stop app || true
-          docker rm app || true
+          echo "=== Updating Docker image ==="
+          sudo docker pull daschaherck/dev-ops:latest || { echo "Docker pull failed"; exit 1; }
 
-          echo "Starting container on port 80..."
-          docker run -d \
-            --name app \
-            -p 80:80 \
-            daschaherck/dev-ops:latest
+          echo "=== Stopping running container (if exists) ==="
+          sudo docker stop app || true
+          sudo docker rm app || true
 
-          echo "Deployment finished!"
+          echo "=== Starting container on port 80 ==="
+          sudo docker run -d --name app -p 80:80 daschaherck/dev-ops:latest || { echo "Docker run failed"; exit 1; }
+
+          echo "=== Deployment finished ==="
+
+          echo "=== Running containers ==="
+          sudo docker ps -a
