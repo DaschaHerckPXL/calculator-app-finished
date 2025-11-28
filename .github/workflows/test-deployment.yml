@@ -1,0 +1,33 @@
+name: test-deployment
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  deployment:
+    runs-on: 
+      self-hosted
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Pull latest Docker image
+      run: |
+        docker pull daschaherck/dev-ops:latest
+
+    - name: Run latest container
+      run: |
+        docker run -d \
+          --name dev-ops \
+          -p 3000:3000 \
+          --restart unless-stopped \
+          daschaherck/dev-ops:latest
+
+    - name: Verify deployment
+      run: |
+        echo "Waiting for container to start..."
+        sleep 10
+        docker ps
+        echo "Deployment completed. Access your app at http://your-server-ip:3000"
