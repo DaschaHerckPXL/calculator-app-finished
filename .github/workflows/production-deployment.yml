@@ -1,37 +1,26 @@
 name: Production Deployment
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Production deploy via SSH
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull daschaherck/devops:latest
 
-    - name: Deploy to EC2 over SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.PROD_IP }}
-        username: ubuntu
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          echo "=== Docker version ==="
-          sudo docker --version
+            docker stop calculator || true
+            docker rm calculator || true
 
-          echo "=== Updating Docker image ==="
-          sudo docker pull daschaherck/dev-ops:latest || { echo "Docker pull failed"; exit 1; }
-
-          echo "=== Stopping running container (if exists) ==="
-          sudo docker stop app || true
-          sudo docker rm app || true
-
-          echo "=== Starting container on port 80 ==="
-          sudo docker run -d --name app -p 80:80 daschaherck/dev-ops:latest || { echo "Docker run failed"; exit 1; }
-
-          echo "=== Deployment finished ==="
-
-          echo "=== Running containers ==="
-          sudo docker ps -a
+            docker run -d \
+              --name calculator \
+              -p 80:3000 \
+              daschaherck/devops:latest
