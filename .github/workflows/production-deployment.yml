@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # 1. Pull latest Docker image
-            docker pull daschaherck/devops:latest
+            docker pull daschaherck/dev-ops:latest
 
             # 2. Stop running containers
             docker stop calculator || true
@@ -26,4 +26,4 @@ jobs:
             docker run -d \
               --name calculator \
               -p 80:3000 \
-              daschaherck/devops:latest
+              daschaherck/dev-ops:latest
